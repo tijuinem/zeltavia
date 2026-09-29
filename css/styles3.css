@@ -1,0 +1,392 @@
+/* ============================================================
+   LECTOR DE INGLÉS —  ZELTAVIA
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&display=swap');
+
+:root {
+  --tinta: #141a2e;
+  --tinta-suave: #4a5170;
+  --papel: #f1f2ec;
+  --papel-alto: #ffffff;
+  --rotulador: #e8a233;
+  --rotulador-suave: #fbe4b8;
+  --audio: #1b6e6e;
+  --audio-suave: #d9ecea;
+  --raya: #d9d4c7;
+  --alto: #b33f3f;
+
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --radio-s: 6px;
+  --radio-m: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+  font-family: var(--sans);
+  color: var(--tinta);
+  background: var(--papel);
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 48px 32px 40px 32px;
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* --- Título --- */
+h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 5vw, 38px);
+  line-height: 1.15;
+  color: var(--tinta);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 14px;
+  background: var(--rotulador);
+  border-radius: 2px;
+}
+
+/* --- Cabeceras de sección (label + contador / hint) --- */
+.label-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 30px;
+  margin-bottom: 6px;
+}
+
+.label-header label,
+.label-header > span[data-i18n]:first-child {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--tinta);
+  margin: 0;
+}
+
+.word-counter {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--audio);
+  background: var(--audio-suave);
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.hint-text {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tinta-suave);
+  font-style: normal;
+}
+
+/* --- Campos: textarea, selects, input range --- */
+textarea,
+select,
+input[type="range"] {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 15.5px;
+  color: var(--tinta);
+}
+
+textarea,
+select {
+  padding: 12px 14px;
+  border: 1.5px solid var(--raya);
+  border-radius: var(--radio-m);
+  background: var(--papel-alto);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--audio);
+  box-shadow: 0 0 0 3px var(--audio-suave);
+}
+
+textarea#texto {
+  line-height: 1.6;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%23141a2e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+/* El selector de idioma trae estilos en línea en el HTML (width:auto, padding, margin);
+   los igualamos aquí encima con !important para que combine con el resto de campos. */
+#selectorIdiomaTraduccion {
+  width: auto !important;
+  padding: 6px 32px 6px 12px !important;
+  margin: 0 !important;
+  font-size: 14px !important;
+  border: 1.5px solid var(--raya);
+  border-radius: var(--radio-s);
+  background-color: var(--papel-alto);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--raya);
+  margin-top: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--audio);
+  border: 3px solid var(--papel-alto);
+  box-shadow: 0 1px 3px rgba(20, 26, 46, 0.35);
+  cursor: pointer;
+  margin-top: -7px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--audio);
+  border: 3px solid var(--papel-alto);
+  cursor: pointer;
+}
+
+/* --- Botón "Elegir carpeta de textos" (tiene estilos en línea, los pisamos) --- */
+body > button[onclick*="inputCarpetaLocal"] {
+  width: auto !important;
+  margin-top: 10px !important;
+  background: var(--papel-alto) !important;
+  color: var(--tinta) !important;
+  border: 1.5px dashed var(--raya) !important;
+  padding: 9px 16px !important;
+  border-radius: var(--radio-s) !important;
+  font-family: var(--sans);
+  font-size: 13.5px !important;
+  font-weight: 600;
+  cursor: pointer !important;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+body > button[onclick*="inputCarpetaLocal"]:hover {
+  border-color: var(--audio) !important;
+  color: var(--audio) !important;
+}
+
+/* --- Controles de reproducción --- */
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  width: auto;
+  flex: 1 1 auto;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.controls button:active {
+  transform: scale(0.97);
+}
+
+.btn-play {
+  flex-grow: 1.4;
+  background: var(--audio);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(27, 110, 110, 0.3);
+}
+
+.btn-play:hover { filter: brightness(1.08); }
+
+.btn-pause {
+  background: var(--papel-alto);
+  color: var(--tinta);
+  border: 1.5px solid var(--raya) !important;
+}
+
+.btn-pause:hover { border-color: var(--rotulador) !important; }
+
+.btn-stop {
+  background: var(--papel-alto);
+  color: var(--alto);
+  border: 1.5px solid var(--raya) !important;
+}
+
+.btn-stop:hover { border-color: var(--alto) !important; }
+
+/* --- Panel de opciones --- */
+.options-panel {
+  margin-top: 26px;
+  padding: 18px 20px;
+  background: var(--papel-alto);
+  border: 1px solid var(--raya);
+  border-left: 4px solid var(--rotulador);
+  border-radius: var(--radio-m);
+}
+
+.options-panel h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--tinta);
+  margin: 0 0 12px 0;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 14.5px;
+  color: var(--tinta);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.option-item:first-child {
+  margin-top: 0;
+}
+
+.option-item input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--audio);
+  cursor: pointer;
+}
+
+/* --- Cajas de lectura y traducción --- */
+.display-box {
+  border: 1px solid var(--raya);
+  border-radius: var(--radio-m);
+  background: var(--papel-alto);
+  padding: 20px 22px;
+  font-size: 17.5px;
+  line-height: 1.9;
+}
+
+#displayTexto {
+  font-family: var(--sans);
+}
+
+#displayTraduccion {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  background: var(--audio-suave);
+  border-color: #bcdad8;
+  color: #103d3d;
+}
+
+/* Indicador 📦/🌐: trae color puesto por JS en línea; lo igualamos con !important */
+#indicadorOrigenTraduccion {
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  font-family: var(--sans);
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--papel);
+}
+
+/* --- Palabras interactivas dentro del texto --- */
+.word-clickable {
+  border-radius: 4px;
+  padding: 2px 3px;
+}
+
+.word-clickable:hover {
+  background-color: var(--rotulador-suave);
+}
+
+.start-marker {
+  outline: 2px solid var(--audio);
+  background-color: var(--audio-suave);
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.highlight {
+  background-color: var(--rotulador) !important;
+  color: var(--tinta);
+  font-weight: 700;
+  outline: none !important;
+  border-radius: 4px;
+  transition: background-color 0.12s ease;
+}
+
+/* --- Pie de página (con estilos en línea en el HTML) --- */
+footer {
+  margin-top: 56px !important;
+  padding: 20px 0 0 0 !important;
+  border-top: 1px solid var(--raya) !important;
+  font-size: 12px !important;
+  color: var(--tinta-suave) !important;
+  text-align: left !important;
+  line-height: 1.6 !important;
+}
+
+footer strong { color: var(--tinta) !important; }
+footer a { color: var(--audio) !important; font-weight: 600; }
+footer span { color: var(--tinta-suave) !important; }
+
+/* ============================================================
+   RESPONSIVE — tablets y móviles
+   ============================================================ */
+
+@media (max-width: 768px) {
+  body { padding: 36px 22px 32px 22px; }
+  .display-box { padding: 16px 18px; font-size: 16.5px; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 28px 16px 28px 16px; font-size: 15px; }
+  h2 { font-size: 26px; }
+  .controls { flex-direction: column; }
+  .controls button { width: 100%; flex: 1 1 100%; }
+  .label-header { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .display-box { font-size: 16px; padding: 14px 16px; }
+}
+
+/* Accesibilidad: respeta si la persona ha pedido menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
