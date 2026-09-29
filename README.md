@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="zeltavia_logo_.webp" alt="ZELTAVIA Logo" width="300">
+  <img src="zeltavia_logo.webp" alt="ZELTAVIA Logo" width="300">
 </div>
 
 # ZELTAVIA
