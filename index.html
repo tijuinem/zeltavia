@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="titulo_pagina">Lector de Inglés Interactivo</title>
+    <link rel="stylesheet" href="css/styles.css?v=20260927e">
+</head>
+<body>
+
+    <h2 data-i18n="titulo_app">Lector de Textos en Inglés</h2>
+
+    <!-- Seleccionar texto desde el servidor -->
+    <div class="label-header">
+        <label for="selectTexto" data-i18n="label_textos_servidor">Textos disponibles en el servidor:</label>
+    </div>
+    <select id="selectTexto" onchange="cargarTextoDesdeServidor()">
+        <option value="" data-i18n="opt_cargando_archivos">Cargando archivos desde la carpeta 'textos'...</option>
+    </select>
+
+    <!-- Alternativa sin servidor: elegir una carpeta de .txt directamente del disco -->
+    <input type="file" id="inputCarpetaLocal" webkitdirectory directory multiple style="display:none" onchange="elegirCarpetaLocal(this)">
+    <button type="button" onclick="document.getElementById('inputCarpetaLocal').click()" data-i18n="boton_elegir_carpeta" style="width:auto; margin-top:8px; background:#6c757d; color:white; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; font-size:14px;">
+        📁 Elegir carpeta de textos (sin servidor)
+    </button>
+
+    <!-- Campo de texto -->
+    <div class="label-header">
+        <label for="texto" data-i18n="label_texto_leer">Texto a leer:</label>
+        <span id="contadorPalabras" class="word-counter">0 / 5000 palabras</span>
+    </div>
+    <textarea id="texto" rows="5" placeholder="Escribe o selecciona un texto arriba..." data-i18n-placeholder="placeholder_texto"></textarea>
+
+    <!-- Voces y Velocidad -->
+    <div class="label-header">
+        <label for="voz" data-i18n="label_voz">Seleccionar Voz en Inglés:</label>
+    </div>
+    <select id="voz"><option data-i18n="opt_cargando_voces">Cargando voces disponibles...</option></select>
+
+    <div class="label-header">
+        <label for="velocidad"><span id="lblVelocidadTexto" data-i18n="label_velocidad">Velocidad de lectura:</span> <span id="valVelocidad">1</span>x</label>
+    </div>
+    <input type="range" id="velocidad" min="0.1" max="1.5" step="0.1" value="1" oninput="document.getElementById('valVelocidad').innerText = this.value">
+
+    <!-- Botones de Control -->
+    <div class="controls">
+        <button class="btn-play" onclick="reproducir()" data-i18n="boton_reproducir">▶ Reproducir</button>
+        <button class="btn-pause" onclick="pausar()" data-i18n="boton_pausar">⏸ Pausar</button>
+        <button class="btn-stop" onclick="detener()" data-i18n="boton_detener">⏹ Detener</button>
+    </div>
+
+    <!-- Opciones de reproducción -->
+    <div class="options-panel">
+        <h3 data-i18n="titulo_opciones">Opciones de reproducción</h3>
+        <label class="option-item">
+            <input type="checkbox" id="chkResaltar" checked>
+            <span data-i18n="opcion_resaltar">Resaltar la palabra que se está leyendo</span>
+        </label>
+        <label class="option-item">
+            <input type="checkbox" id="chkTraduccion" onchange="toggleTraduccion()">
+            <span data-i18n="opcion_traduccion">Traducción en tiempo real</span>
+        </label>
+        <label class="option-item">
+            <span data-i18n="label_idioma_traduccion">Idioma de traducción:</span>
+            <select id="selectorIdiomaTraduccion" onchange="cambiarIdiomaTraduccion(this.value)" style="width:auto; padding:4px 8px; margin:0;">
+                <option value="es" selected>Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </label>
+    </div>
+
+    <!-- Visor de Lectura -->
+    <div class="label-header">
+        <label for="displayTexto" data-i18n="label_lectura_tiempo_real">Lectura en tiempo real:</label>
+        <span class="hint-text" data-i18n="hint_clic">💡 Clic: Marca inicio | Doble Clic: Pronuncia palabra sola</span>
+    </div>
+    <div id="displayTexto" class="display-box">El texto listo para leer aparecerá aquí...</div>
+
+    <!-- Visor de Traducción -->
+    <div class="label-header">
+        <label for="displayTraduccion" id="lblIdiomaTraduccion">Traducción al español (frase/línea actual):</label>
+        <span id="indicadorOrigenTraduccion" style="font-size:12px; font-weight:normal;"></span>
+    </div>
+    <div id="displayTraduccion" class="display-box">Activa la casilla "Traducción en tiempo real" para ver la traducción al español mientras se lee.</div>
+
+	<!-- ===== TEXTO PARA FOOTER - Garba ===== -->
+    <footer style="margin-top: 40px; padding: 15px; font-size: 12px; color: #6c757d; text-align: center; border-top: 1px solid #e9ecef; line-height: 1.5;">
+        <p style="margin: 0 0 10px 0;"><strong>Aviso sobre Derechos de Autor y Uso:</strong> Esta herramienta de síntesis de voz se proporciona exclusivamente con fines educativos, de accesibilidad y de uso personal. El usuario es el único responsable de garantizar que los textos introducidos en la aplicación respetan las leyes de propiedad intelectual vigentes. Se desaconseja y prohíbe el uso de esta herramienta para la reproducción, grabación o distribución pública no autorizada de material protegido por copyright.</p>
+        
+        <p style="margin: 0;">
+            _ Script desarrollado por <strong>Garba</strong> para <a href="https://eduardogarbayo.com" target="_blank" style="color: #0d6efd; text-decoration: none;">eduardogarbayo.com</a>.<br>
+            <span style="font-size: 11px;">Copyleft. Licencia Creative Commons Reconocimiento (CC BY 4.0): Se permite copiar, manipular, distribuir y utilizar esta obra libremente, siempre y cuando se cite la autoría y la fuente original.</span>
+        </p>
+    </footer>
+    <!-- =====FIN TEXTO PARA FOOTER - Garba==== -->
+	
+	
+	
+    <script src="js/app.js?v=20260927e"></script>
+</body>
+</html>
