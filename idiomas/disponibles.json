@@ -1,0 +1,7 @@
+[
+  { "codigo": "es", "nombre": "Español" },
+  { "codigo": "fr", "nombre": "Français" },
+  { "codigo": "de", "nombre": "Deutsch" },
+  { "codigo": "pt", "nombre": "Português" },
+  { "codigo": "cn", "nombre": "中国" }
+]
