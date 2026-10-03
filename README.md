@@ -18,6 +18,15 @@
 * **Dual Audiovisual Coding:** Integration of text, audio, and visual cues to enhance cognitive retention.
 * **Spaced Repetition & Active Production:** Systematic review cycles and structured output exercises.
 
+## 📚 The ZELTAVIA Word List
+
+* **Spoken-First Frequency:** 5,000 lemmas in five 1,000-word bands, ranked by a single Zipf-based score combining movie/TV subtitle frequency with the NGSL.
+* **Real-World Coverage:** Covers about 95% of subtitle tokens; the first 1,000 words alone cover 86%.
+* **Everyday Language Included:** Interjections, colloquial forms (*gonna*, *wanna*) and tagged profanity, with each word's register marked.
+* **Guaranteed Basics:** Days, months, numbers and colors are placed early by design.
+* **Open & Reproducible:** Built only from open sources, with a single script and stable word IDs.
+* **Multilingual by Design:** The list is language-independent; translations (Spanish today, French or Portuguese tomorrow) are separate files linked by ID.
+  
 ## 🛠️ Technical Architecture
 
 ZELTAVIA is built with a lightweight, efficient technology stack:
