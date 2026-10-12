@@ -38,5 +38,5 @@ ZELTAVIA is built with a lightweight, efficient technology stack:
 
 ```text
 zeltavia/
-│
+
 
