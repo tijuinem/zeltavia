@@ -39,25 +39,4 @@ ZELTAVIA is built with a lightweight, efficient technology stack:
 ```text
 zeltavia/
 │
-├── css/
-│   ├── styles.css
-│   └── styles3.css
-│
-├── textos/                 # Frequency lists (0-5000 words) and Phase 1-6 stories
-│   ├── Most Common English Words - ... .txt
-│   └── Phase ... - Tale - ... .txt
-│
-├── traducciones/           # JSON translation files per phase
-│   ├── de/                 # German translations
-│   ├── es/                 # Spanish translations
-│   └── fr/                 # French translations
-│
-├── idiomas/                # App interface languages
-│   ├── cn.json, de.json, es.json, fr.json, pt.json
-│   └── disponibles.json
-│
-├── js/
-│   └── app.js              # Core client engine (Web Speech API, sync, translation UI)
-│
-├── get_texts.php           # Backend endpoint for text management
-└── index.html              # Main application interface
+
