@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZELTAVIA Read — Lector Sincronizado en 3 Ventanas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="./logo-z.png">
+  <link rel="icon" type="image/png" href="../logo-z.png">
+  <link rel="shortcut icon" href="./icon.png">
+  <link rel="stylesheet" href="css/style.css?v=20261003_v1">
+  <script>
+    // Limpieza automática de Service Workers y cachés antiguos para forzar código fresco
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (var i = 0; i < registrations.length; i++) {
+          registrations[i].unregister();
+        }
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(function (names) {
+        for (var i = 0; i < names.length; i++) {
+          caches.delete(names[i]);
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <!-- Header Oficial ZELTAVIA -->
+  <header>
+    <div class="brand-wrapper">
+      <div class="brand-logo">
+        <span>ZELTAVIA</span>
+      </div>
+      <div class="brand-details">
+        <span class="brand-tag">App Read</span>
+        <span class="brand-sub">Método de inglés basado en la frecuencia</span>
+      </div>
+    </div>
+    <a href="/?view=vocab" class="back-to-course" id="backToCourseBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      <span>Volver al Curso Principal</span>
+    </a>
+  </header>
+
+  <!-- Contenedor Principal de la App -->
+  <main>
+    <!-- Card de Controles de Audio y Configuración Simétrica -->
+    <section class="controls-card">
+      <!-- 1. Botones de Reproducción -->
+      <div class="playback-buttons-group">
+        <button id="btnPlay" class="ctrl-btn btn-primary" title="Iniciar o reanudar lectura">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span id="playBtnLabel">Reproducir</span>
+        </button>
+
+        <button id="btnPause" class="ctrl-btn btn-secondary" title="Pausar lectura">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16"/>
+            <rect x="14" y="4" width="4" height="16"/>
+          </svg>
+          <span>Pausar</span>
+        </button>
+
+        <button id="btnStop" class="ctrl-btn btn-secondary" title="Detener y volver al principio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="6" width="12" height="12"/>
+          </svg>
+          <span>Detener</span>
+        </button>
+      </div>
+
+      <!-- 2. Selector de Voces (TTS) - Enrasado simétrico con el de Velocidad -->
+      <div class="control-box-symmetric voice-config-box">
+        <div class="control-box-header">
+          <span class="config-label">Voz en Inglés (TTS):</span>
+          <span class="voice-engine-badge" id="voiceCountBadge">Cargando voces...</span>
+        </div>
+        <div class="dropdown-wrapper">
+          <select id="voiceSelect" class="voice-dropdown" title="Elige la voz sintetizada de tu preferencia (Voces Naturales disponibles en Microsoft Edge)">
+            <option value="">Detectando voces del sistema...</option>
+          </select>
+        </div>
+        <div class="control-box-footer-hint">
+          <span>Microsoft Edge Online Natural & Google TTS</span>
+        </div>
+      </div>
+
+      <!-- 3. Configuración de Velocidad (0.1 a 1.5) - Enrasado simétrico -->
+      <div class="control-box-symmetric speed-config-box">
+        <div class="control-box-header">
+          <span class="config-label">Velocidad de Lectura:</span>
+          <span id="speedValueLabel" class="speed-badge">1.00x</span>
+        </div>
+        <div class="speed-slider-row">
+          <span class="range-limit">0.1x</span>
+          <input 
+            type="range" 
+            id="speedSlider" 
+            min="0.1" 
+            max="1.5" 
+            step="0.05" 
+            value="1.0" 
+            class="speed-slider"
+          />
+          <span class="range-limit">1.5x</span>
+        </div>
+        <div class="speed-presets">
+          <button class="preset-btn" data-val="0.25">0.25x</button>
+          <button class="preset-btn" data-val="0.5">0.5x</button>
+          <button class="preset-btn" data-val="0.75">0.75x</button>
+          <button class="preset-btn active" data-val="1.0">1.0x</button>
+          <button class="preset-btn" data-val="1.25">1.25x</button>
+          <button class="preset-btn" data-val="1.5">1.5x</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAS 3 VENTANAS SINCRONIZADAS CON TAMAÑOS HOMOGÉNEOS -->
+    <div class="windows-container">
+
+      <!-- ================= VENTANA 1 ================= -->
+      <div class="window-panel" id="window1">
+        <div class="window-header">
+          <div class="window-title">
+            <span class="window-number">1</span>
+            <h2>Texto a Leer (Editor & Carga)</h2>
+          </div>
+          <div class="window-actions">
+            <button id="btnPasteText" class="action-pill-btn action-pill-paste" title="Pegar texto copiado desde el portapapeles">
+              <span>📋 Pegar Texto</span>
+            </button>
+            <button id="btnApplyText" class="action-pill-btn" title="Cargar este texto en el lector interactivo">
+              <span>Actualizar Lector ➔</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Selectores rápidos de Cuentos y Bandas -->
+        <div class="quick-selectors">
+          <div class="selector-row">
+            <span class="sel-label">Cuentos de las Fases:</span>
+            <div class="pills-scroll">
+              <button class="story-pill active" data-story="1">Fase 1: A Normal Day</button>
+              <button class="story-pill" data-story="2">Fase 2: The Strange Trip</button>
+              <button class="story-pill" data-story="3">Fase 3: A Big Decision</button>
+              <button class="story-pill" data-story="4">Fase 4: The Interview</button>
+              <button class="story-pill" data-story="5">Fase 5: Missing Money</button>
+              <button class="story-pill" data-story="6">Fase 6: The Meeting</button>
+            </div>
+          </div>
+          <div class="selector-row">
+            <span class="sel-label">Bandas de Frecuencia (Palabras sueltas):</span>
+            <div class="pills-scroll">
+              <button class="band-pill" data-band="1">Banda 1 (1.000 palabras)</button>
+              <button class="band-pill" data-band="2">Banda 2 (1.000 palabras)</button>
+              <button class="band-pill" data-band="3">Banda 3 (1.000 palabras)</button>
+              <button class="band-pill" data-band="4">Banda 4 (1.000 palabras)</button>
+              <button class="band-pill" data-band="5">Banda 5 (1.000 palabras)</button>
+              <button class="band-pill phrasal-pill" data-band="phrasal">Phrasal Verbs (200 verbos)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Área de texto editable para escribir o pegar texto propio -->
+        <div class="textarea-wrapper">
+          <textarea 
+            id="textInput" 
+            placeholder="Puedes pegar aquí tu propio texto en inglés libremente, o seleccionar una banda de palabras sueltas o un cuento de las fases..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="window-footer">
+          <span id="textStats">0 palabras · 0 caracteres</span>
+          <span class="sync-hint">Haz clic en cualquier punto para sincronizar la lectura</span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="btnPasteTextFooter" class="btn-text-action" title="Pegar texto copiado">📋 Pegar</button>
+            <button id="btnClearText" class="btn-text-action">Limpiar texto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= VENTANA 2 ================= -->
+      <div class="window-panel" id="window2">
+        <div class="window-header">
+          <div class="window-title">
+            <span class="window-number">2</span>
+            <h2>Lectura en Tiempo Real (Panel Interactivo)</h2>
+          </div>
+          <div class="window-tag-instruction">
+            <span>Click = Seleccionar y reproducir desde aquí</span> · <span>Doble click = Pronunciar palabra</span>
+          </div>
+        </div>
+
+        <!-- Contenido interactivo donde las palabras se iluminan y se pueden cliquear -->
+        <div class="interactive-reading-viewport" id="readingViewport">
+          <!-- Palabras y oraciones generadas dinámicamente -->
+        </div>
+
+        <div class="window-footer">
+          <span id="readingProgress">Elemento 1 de 1 · Progreso: 0%</span>
+          <span class="status-chip" id="speakingStatusChip">Listo para reproducir</span>
+        </div>
+      </div>
+
+      <!-- ================= VENTANA 3 ================= -->
+      <div class="window-panel" id="window3">
+        <div class="window-header">
+          <div class="window-title">
+            <span class="window-number">3</span>
+            <h2>Traducción en Tiempo Real & Diccionario</h2>
+          </div>
+
+          <!-- Acciones de cabecera: Toggle de Traducción Visible + Badge de Modo Local / Google -->
+          <div class="window-header-actions">
+            <!-- Botón de Traducción Visible ubicado justo antes del aviso de Modo Local -->
+            <button id="btnToggleTranslation" class="toggle-switch-compact active" title="Activar o pausar la traducción en tiempo real">
+              <span class="toggle-indicator"></span>
+              <span id="toggleTranslationText">Traducción Visible</span>
+            </button>
+
+            <!-- Badge que indica si se traduce desde Local Offline o desde Google Translate -->
+            <div id="translationSourceBadge" class="source-mode-badge badge-offline">
+              ⚡ Modo Local (Offline)
+            </div>
+          </div>
+        </div>
+
+        <!-- Área de traducción del bloque actual o de la palabra seleccionada -->
+        <div class="translation-viewport" id="translationViewport">
+          <!-- Contenido traducido dinámico -->
+        </div>
+
+        <div class="window-footer">
+          <span id="translationSourceLabel">Traducción alineada al español</span>
+          <button id="btnListenWord" class="btn-text-action" style="display: none;">
+            🔊 Escuchar palabra
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts de datos y motor -->
+  <script src="data/texts.js?v=20261008_v2"></script>
+  <script src="data/frequency_words.js?v=20261008_v2"></script>
+  <script src="data/phrasal_verbs.js?v=20261008_v2"></script>
+  <script src="data/dictionary.js?v=20261008_v2"></script>
+  <script src="js/app.js?v=20261008_v2"></script>
+</body>
+</html>

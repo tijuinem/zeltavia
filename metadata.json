@@ -1,0 +1,7 @@
+{
+  "name": "ZELTAVIA — Curso de Inglés por Frecuencia Léxica",
+  "description": "Método integral de adquisición de inglés basado en frecuencia léxica real, input comprensible, narrativa graduada y micro-reglas deductivas.",
+  "requestFramePermissions": ["CAMERA_MICROPHONE"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

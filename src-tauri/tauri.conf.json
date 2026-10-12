@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/crates/tauri-cli/schema.json",
+  "productName": "Zeltavia",
+  "version": "1.0.0",
+  "identifier": "com.garba.zeltavia",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "ZELTAVIA — Curso de Inglés por Frecuencia Léxica",
+        "width": 1280,
+        "height": 840,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/64x64.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "installerHooks": "windows/hooks.nsh"
+      }
+    },
+    "copyright": "Copyright © 2026 Zeltavia",
+    "category": "Education",
+    "shortDescription": "Curso de Inglés por Frecuencia Léxica e Input Comprensible",
+    "longDescription": "Método integral de adquisición de inglés basado en frecuencia léxica real, input comprensible, narrativa graduada y micro-reglas deductivas. Diseñado para funcionamiento autónomo y desconectado."
+  }
+}

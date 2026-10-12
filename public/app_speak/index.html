@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZELTAVIA Speak — Corrector y Práctica de Pronunciación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="./logo-z.png">
+  <link rel="icon" type="image/png" href="../logo-z.png">
+  <link rel="shortcut icon" href="./icon.png">
+  <link rel="stylesheet" href="css/style.css?v=20261002_v1">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="brand-wrapper">
+      <div class="brand-logo">
+        <span>ZELTAVIA</span>
+      </div>
+      <span class="brand-tag">Speak & Correct</span>
+    </div>
+    <a href="/?view=vocab" class="back-to-course" id="backToCourseBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      <span>Volver al Curso Principal</span>
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="trainer-card">
+      <!-- Frequency Bands Selector Bar (5 Bandas Oficiales de 1.000 a 5.000 palabras) -->
+      <div class="phase-bar" id="bandsBar">
+        <div class="phase-chips">
+          <button class="band-btn active" data-band="1">Banda 1 (1–1.000)</button>
+          <button class="band-btn" data-band="2">Banda 2 (1.001–2.000)</button>
+          <button class="band-btn" data-band="3">Banda 3 (2.001–3.000)</button>
+          <button class="band-btn" data-band="4">Banda 4 (3.001–4.000)</button>
+          <button class="band-btn" data-band="5">Banda 5 (4.001–5.000)</button>
+          <button class="band-btn phrasal-btn" data-band="phrasal">Phrasal Verbs (200)</button>
+        </div>
+
+        <div class="stats-badge">
+          Precisión: <strong id="scoreCounter">0 / 0</strong>
+        </div>
+      </div>
+
+      <!-- Search & Jump Toolbar -->
+      <div class="search-jump-toolbar">
+        <div class="search-input-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" id="wordSearchInput" placeholder="Buscar entre las 5.000 palabras (inglés o traducción)..." autocomplete="off">
+          <button id="btnClearSearch" class="btn-clear-search" style="display: none;" title="Limpiar búsqueda">✕</button>
+          <div id="searchDropdown" class="search-dropdown" style="display: none;"></div>
+        </div>
+
+        <div class="jump-control">
+          <span>Palabra Nº</span>
+          <input type="number" id="jumpIndexInput" min="1" max="1000" value="1">
+          <span id="jumpTotalText">de 1.000</span>
+          <button id="btnJump" class="btn-jump">Ir</button>
+        </div>
+      </div>
+
+      <!-- Voice Selector Toolbar (Nativo Sistema Operativo / Offline) -->
+      <div class="voice-select-toolbar" id="voiceSelectToolbar">
+        <div class="voice-select-group">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <label for="speakVoiceSelect">Voz del Sistema (Inglés):</label>
+          <select id="speakVoiceSelect" class="voice-select" title="Selecciona la voz en inglés instalada en tu sistema operativo">
+            <option value="">Cargando voces del sistema...</option>
+          </select>
+          <button id="btnTestVoice" class="btn-test-voice" title="Probar cómo suena la voz seleccionada">
+            <span>Probar</span>
+          </button>
+        </div>
+        <div class="voice-status-pill" id="voiceStatusPill">
+          <span>Detectando voces locales...</span>
+        </div>
+      </div>
+
+      <!-- Word Display Box -->
+      <div class="word-box" id="wordBox">
+        <div class="word-kicker" id="wordKicker">Banda 1 · Palabra 1 de 1.000</div>
+        <div class="target-word" id="targetWord">the</div>
+        <div class="translation-text" id="translationText">= el, la, los, las</div>
+        <div class="example-phrase" id="exampleText">"In the house, there is a kitchen."</div>
+        
+        <!-- Banner visual prominente de resultado inmediato (CORRECTO / INCORRECTO) -->
+        <div id="quickResultBanner" class="quick-result-banner" style="display: none;"></div>
+      </div>
+
+      <!-- Controls Area -->
+      <div class="controls-area">
+        <button class="mic-circle-btn" id="micBtn" title="Hablar por micrófono (o pulsa la barra espaciadora)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" x2="12" y1="19" y2="22"/>
+          </svg>
+        </button>
+
+        <span class="mic-instruction" id="micInstruction">Pulsa el micrófono para hablar (o pulsa Espacio)</span>
+
+        <!-- Live Volume VU Meter -->
+        <div class="mic-vu-meter-container" id="micVuContainer" style="display: none;">
+          <div class="mic-vu-bar">
+            <div class="mic-vu-fill" id="micVuFill" style="width: 0%;"></div>
+          </div>
+          <span class="mic-vu-text" id="micVuText">Escuchando... Nivel: 0%</span>
+        </div>
+
+        <div style="margin-top: 0.4rem; margin-bottom: 0.6rem;">
+          <button id="btnMicDiagnostic" class="btn-mic-diagnostic" type="button" title="Probar si el micrófono y los permisos de Windows funcionan">
+            🎙️ Probar / Diagnóstico de Micrófono
+          </button>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-secondary" id="prevBtn" title="Palabra anterior (Atajo: P o flecha izquierda)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+            <span>Anterior</span>
+          </button>
+
+          <button class="btn-secondary" id="listenBtn" title="Escuchar modelo nativo (Atajo: L)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span>Escuchar Modelo</span>
+          </button>
+
+          <button class="btn-secondary" id="randomBtn" title="Palabra aleatoria (Atajo: R)">
+            <span>🔀 Aleatoria</span>
+          </button>
+
+          <button class="btn-next" id="nextBtn" title="Siguiente palabra (Atajo: N o flecha derecha)">
+            <span>Siguiente</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Feedback Area -->
+      <div class="feedback-box" id="feedbackBox"></div>
+    </div>
+  </main>
+
+  <!-- Modal Diagnóstico de Micrófono para Windows -->
+  <div id="micDiagnosticModal" class="mic-diagnostic-overlay" style="display: none;">
+    <div class="mic-diagnostic-card">
+      <div class="mic-diag-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.25rem;">🎙️</span>
+          <h3 style="margin: 0; font-size: 1.05rem; color: #002a5b;">Diagnóstico de Micrófono (Windows & WebView2)</h3>
+        </div>
+        <button id="btnCloseMicDiag" class="btn-close-diag">✕</button>
+      </div>
+      <div class="mic-diag-body">
+        <p style="font-size: 0.82rem; color: #475569; margin-bottom: 0.85rem;">
+          Comprobación interactiva del estado de entrada de audio en tu equipo:
+        </p>
+
+        <div class="diag-step-box">
+          <div class="diag-step-title">1. Dispositivos de audio detectados:</div>
+          <div id="diagDeviceList" class="diag-device-list">Detectando micrófonos conectados...</div>
+        </div>
+
+        <div class="diag-step-box" style="margin-top: 0.75rem;">
+          <div class="diag-step-title">2. Prueba de volumen en tiempo real (Nativo):</div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; margin: 0.5rem 0;">
+            <button id="btnStartDiagTest" class="btn-secondary" style="font-weight: 700; padding: 0.4rem 0.9rem;">
+              ▶ Iniciar Prueba de Sonido
+            </button>
+            <span id="diagTestStatus" style="font-size: 0.8rem; color: #64748b;">Pulsa para hablar</span>
+          </div>
+          <div class="mic-vu-bar" style="height: 12px; margin-top: 0.4rem;">
+            <div id="diagVuFill" class="mic-vu-fill" style="width: 0%;"></div>
+          </div>
+          <div id="diagVuText" style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; font-weight: 600;">Nivel actual: 0%</div>
+        </div>
+
+        <div class="diag-step-box" style="margin-top: 0.75rem; background: #f8fafc; border-left: 3px solid #25b0ae;">
+          <div class="diag-step-title">3. ¿Cómo activar el micrófono en Windows 10/11 si no responde?</div>
+          <ol style="font-size: 0.78rem; color: #334155; margin: 0.35rem 0 0 1.2rem; padding: 0; line-height: 1.5;">
+            <li>Abre la <strong>Configuración de Windows</strong> (teclas Win + I).</li>
+            <li>Entra en <strong>Privacidad y seguridad</strong> &gt; <strong>Micrófono</strong>.</li>
+            <li>Verifica que <strong>"Permitir que las aplicaciones accedan al micrófono"</strong> esté activado.</li>
+            <li>Baja hasta <strong>"Permitir que las aplicaciones de escritorio accedan al micrófono"</strong> y verifica que esté <strong>ACTIVADO</strong>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="mic-diag-footer">
+        <button id="btnDoneMicDiag" class="btn-primary" style="padding: 0.45rem 1.25rem; font-size: 0.85rem;">
+          Entendido / Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/words.js?v=20261008_v2"></script>
+  <script src="data/phrasal_verbs.js?v=20261008_v2"></script>
+  <script src="js/app.js?v=20261008_v2"></script>
+</body>
+</html>
