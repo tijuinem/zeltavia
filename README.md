@@ -4,7 +4,7 @@
 
 # ZELTAVIA
 
-> Interactive web application and pedagogical method for English acquisition based on lexical frequency bands, dual audiovisual coding, and synchronized speech synthesis. Created by Eduardo Garbayo.
+> Interactive web application and pedagogical method for English acquisition based on lexical frequency bands, dual audiovisual coding, and synchronized speech synthesis. Created by @garba.
 
 ## 🚀 Overview
 
